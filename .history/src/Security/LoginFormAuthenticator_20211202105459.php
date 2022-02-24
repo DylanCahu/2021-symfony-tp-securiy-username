@@ -67,20 +67,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new InvalidCsrfTokenException();
         }
 
-        $username = $credentials['username'];
-        $password = random_bytes(15);
-
-
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
 
         if (!$user) {
-            //throw new UsernameNotFoundException('Username could not be found.');
-            //Save to DB if not exist
-            $user = new User();
-            $user->setUsername($username);
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+            throw new UsernameNotFoundException('Username could not be found.');
         }
 
         return $user;
