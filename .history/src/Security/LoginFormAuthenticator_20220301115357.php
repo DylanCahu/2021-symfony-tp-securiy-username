@@ -154,7 +154,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
                 return false;
 
             }
-        } catch (HTTP_Request2_Exception $e) {
+        } catch (HttpClientInterface $e) {
             echo 'Error: ' . $e->getMessage();
         }
 

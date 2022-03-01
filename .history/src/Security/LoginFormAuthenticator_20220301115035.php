@@ -135,9 +135,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
                 $this->logger->info("Authentification échouée");
 
-                echo 'Identifiant ou mot de passe incorrect, veuillez réessayer ';
-
-
                 $user = getUser();
                 $this->entityManager->remove($user);
                 $this->entityManager->flush();

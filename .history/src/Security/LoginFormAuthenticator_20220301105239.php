@@ -19,7 +19,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
@@ -32,9 +31,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $csrfTokenManager;
     private $passwordEncoder;
     private $client;
-    private $logger;
 
-    /**
+    /*
      * @required
      */
     public function setHttpClient(HttpClientInterface $client): void//remplace un peu un this client dans le constructeur
@@ -43,9 +41,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $this->client = $client;
     }
 
-    /**
-     * @required
-     */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -108,10 +103,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        //return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
 
         $username = $credentials['username'];
-        $password = $credentials['password'];
+        $password = $credentials['usernapasswordme'];
 
         $response = $this->client->request('POST', 'https://api.ecoledirecte.com/v3/login.awp', [
 
@@ -121,44 +116,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             }',
         ]
         );
-        $this->logger->debug("ECOLE DIRECT" . print_r(json_decode($response->getContent()), true)); //debug, on envoit la reponse dans les logs
-
-        try {
-            $response = $request->send();
-            if ($response->getStatus() == 200) {
-
-                $this->logger->info("Utilisateur connecté");
-
-                return true;
-
-            } elseif ($response->getStatus() == 505) {
-
-                $this->logger->info("Authentification échouée");
-
-                echo 'Identifiant ou mot de passe incorrect, veuillez réessayer ';
-
-
-                $user = getUser();
-                $this->entityManager->remove($user);
-                $this->entityManager->flush();
-
-                return false;
-
-                //$response->getReasonPhrase();
-            } else {
-
-                $this->logger->info("Erreur innatendue");
-
-                echo 'Une erreur est survenue : ' . $response->getStatus() . ' ';
-
-                return false;
-
-            }
-        } catch (HTTP_Request2_Exception $e) {
-            echo 'Error: ' . $e->getMessage();
-        }
-
+        $this->$logger->debug("ECOLE DIRECT".$response); //debug, on envoit la reponse dans les logs 
+        return true;
     }
+
+
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.

@@ -128,15 +128,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             if ($response->getStatus() == 200) {
 
                 $this->logger->info("Utilisateur connecté");
-
+                
                 return true;
 
             } elseif ($response->getStatus() == 505) {
 
                 $this->logger->info("Authentification échouée");
-
-                echo 'Identifiant ou mot de passe incorrect, veuillez réessayer ';
-
 
                 $user = getUser();
                 $this->entityManager->remove($user);
