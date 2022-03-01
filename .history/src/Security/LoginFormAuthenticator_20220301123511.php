@@ -129,7 +129,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
         $responseED_data = $responseED->data;
 
-        $this->logger->debug("ECOLE DIRECT Nom etablissement = '" . print_r($responseED_data->accounts[0]->nomEtablissement, true)."'");
+        $this->logger->debug("ECOLE DIRECT acc = '" . print_r($responseED_data->accounts[0]->nomEtablissement, true)."'");
         $this->logger->debug("ECOLE DIRECT ID = '" . print_r($responseED_data->accounts[0]->uid, true)."'");
         $this->logger->debug("ECOLE DIRECT classe = '" . print_r($responseED_data->accounts[0]->profile->classe->libelle, true)."'");
 

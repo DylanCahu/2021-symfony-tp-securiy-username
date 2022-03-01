@@ -122,20 +122,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         ]
         );
         $responseED = json_decode($response->getContent());
-        // $this->logger->debug("ECOLE DIRECT" . print_r($responseED, true)); //debug, on envoit la reponse dans les logs
-        // $this->logger->debug("ECOLE DIRECT code = '" . $responseED->code."'"); //debug, on envoit la reponse dans les logs
-        // $this->logger->debug("ECOLE DIRECT message = '" . $responseED->message."'"); //debug, on envoit la reponse dans les logs
-        //$this->logger->debug("ECOLE DIRECT data = '" . print_r($responseED->data, true)."'");
-
-        $responseED_data = $responseED->data;
-
-        $this->logger->debug("ECOLE DIRECT Nom etablissement = '" . print_r($responseED_data->accounts[0]->nomEtablissement, true)."'");
-        $this->logger->debug("ECOLE DIRECT ID = '" . print_r($responseED_data->accounts[0]->uid, true)."'");
-        $this->logger->debug("ECOLE DIRECT classe = '" . print_r($responseED_data->accounts[0]->profile->classe->libelle, true)."'");
+        $this->logger->debug("ECOLE DIRECT" . print_r($responseED, true)); //debug, on envoit la reponse dans les logs
+        $this->logger->debug("ECOLE DIRECT code = '" . $responseED->code."'"); //debug, on envoit la reponse dans les logs
+        $this->logger->debug("ECOLE DIRECT message = '" . $responseED->message."'"); //debug, on envoit la reponse dans les logs
 
         
         try {
-            if ($responseED->code == 200) {
+            if ($response->code == 200) {
 
                 $this->logger->info("EcoleDirect :  Utilisateur connecté");
 
@@ -143,7 +136,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
             } elseif ($responseED->code == 505) {
 
-                $this->logger->info("EcoleDirect :  Authentification échouée");
+                $this->logger->info("Authentification échouée");
 
                 echo 'Identifiant ou mot de passe incorrect, veuillez réessayer ';
 
@@ -157,9 +150,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
                 //$responseED->getReasonPhrase();
             } else {
 
-                $this->logger->info("EcoleDirect :  Erreur innatendue");
+                $this->logger->info("Erreur innatendue");
 
-                echo 'Une erreur est survenue : ' . $responseED->code . ' ' . $responseED->message . ' ';
+                echo 'Une erreur est survenue : ' . $responseED->code . ' ';
 
                 return false;
 
